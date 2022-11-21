@@ -2,6 +2,7 @@ package com.example.bequiet
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bequiet.databinding.ActivityListOfPlacesBinding
 
 class ListOfPlaces : AppCompatActivity() {
@@ -11,5 +12,8 @@ class ListOfPlaces : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityListOfPlacesBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        binding.rv.layoutManager = LinearLayoutManager(this)
+        binding.rv.adapter = MyAdapter()
     }
 }

@@ -43,7 +43,7 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
         return db.rawQuery("SELECT * FROM " + TABLE_NAME, null)
     }
 
-    fun listPlaces(): Int {
+    fun listPlaces(): ArrayList<Place> {
         val sql = "select * from $TABLE_NAME"
         val db = this.readableDatabase
         val storePlaces =
@@ -61,7 +61,7 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
             while (cursor.moveToNext())
         }
         cursor.close()
-        return storePlaces.size
+        return storePlaces
     }
 
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
