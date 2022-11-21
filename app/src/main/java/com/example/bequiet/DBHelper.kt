@@ -43,6 +43,27 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
         return db.rawQuery("SELECT * FROM " + TABLE_NAME, null)
     }
 
+    fun listPlaces(): Int {
+        val sql = "select * from $TABLE_NAME"
+        val db = this.readableDatabase
+        val storePlaces =
+            ArrayList<Place>()
+        val cursor = db.rawQuery(sql, null)
+        if (cursor.moveToFirst()) {
+            do {
+                val id = cursor.getString(0).toInt()
+                val name = cursor.getString(1)
+                val volume = cursor.getString(2).toInt()
+                val x = cursor.getString(3).toDouble()
+                val y = cursor.getString(4).toDouble()
+                storePlaces.add(Place(id, name, volume, x, y))
+            }
+            while (cursor.moveToNext())
+        }
+        cursor.close()
+        return storePlaces.size
+    }
+
     override fun onUpgrade(p0: SQLiteDatabase?, p1: Int, p2: Int) {
     }
 
