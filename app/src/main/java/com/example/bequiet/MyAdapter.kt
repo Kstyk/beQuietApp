@@ -1,19 +1,16 @@
 package com.example.bequiet
 
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bequiet.databinding.ActivityListOfPlacesBinding
 
-class MyAdapter: RecyclerView.Adapter<MyViewHolder>() {
+class MyAdapter(var size: Int): RecyclerView.Adapter<MyViewHolder>() {
     var count: Int = 0
     private lateinit var binding: ActivityListOfPlacesBinding
-    val db = DBHelper(binding.rv.context,null)
-    var size: Int = db.listPlaces().size
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -22,7 +19,7 @@ class MyAdapter: RecyclerView.Adapter<MyViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return 1
+        return size
     }
 
     override fun onBindViewHolder(holder: MyViewHolder, position: Int) {

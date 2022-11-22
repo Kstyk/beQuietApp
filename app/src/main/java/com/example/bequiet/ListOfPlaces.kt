@@ -13,7 +13,9 @@ class ListOfPlaces : AppCompatActivity() {
         binding = ActivityListOfPlacesBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        val db = DBHelper(this, null)
+
         binding.rv.layoutManager = LinearLayoutManager(this)
-        binding.rv.adapter = MyAdapter()
+        binding.rv.adapter = MyAdapter(db.listPlaces().size)
     }
 }
