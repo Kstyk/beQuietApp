@@ -18,4 +18,11 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Lista miejsc" />
+
+    <Button
+        android:id="@+id/location"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="startBackgroundProcessButtonClick"
+        android:text="Obecna lokalizacja" />
 </LinearLayout>
