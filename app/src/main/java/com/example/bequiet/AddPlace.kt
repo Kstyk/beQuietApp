@@ -46,15 +46,13 @@ class AddPlace : AppCompatActivity() {
             resultLauncher.launch(intent)
         }
 
-
-
         binding.Name.setOnFocusChangeListener(View.OnFocusChangeListener{
             view, b->hasWindowFocus()
         })
 
         binding.add.setOnClickListener() {
-            val name = binding.Name.text.toString()
-            val volume = binding.seekBar2.progress
+            var name = binding.Name.text.toString()
+            var volume = binding.seekBar2.progress
 
             val db = DBHelper(this, null)
 
