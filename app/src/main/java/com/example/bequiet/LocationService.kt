@@ -5,6 +5,9 @@ import android.app.Service
 import android.content.ContentValues
 import android.content.Context
 import android.content.Intent
+import android.location.Location
+import android.location.LocationManager
+import android.media.AudioManager
 import android.os.IBinder
 import android.os.PowerManager
 import android.util.Log
@@ -69,17 +72,31 @@ class LocationService: Service() {
             .catch { e -> e.printStackTrace() }
             .onEach { location ->
                 counter++
+
                 val lat = location.latitude.toString()
                 val long = location.longitude.toString()
 
-//                val locationToCompare: Location = Location(LocationManager.GPS_PROVIDER)
+                val db = DBHelper(this, null)
+                var places: ArrayList<Place> = db.listPlaces()
 
-//                locationToCompare.latitude = places[db.listPlaces().size - 1].x.toDouble()
-//                locationToCompare.longitude = places[db.listPlaces().size - 1].y.toDouble()
+                val locationToCompare: Location = Location(LocationManager.GPS_PROVIDER)
+
+                locationToCompare.latitude = places[db.listPlaces().size - 1].x.toDouble()
+                locationToCompare.longitude = places[db.listPlaces().size - 1].y.toDouble()
 //
-//                val distanceTo: Float = location.distanceTo(locationToCompare)
+                val distanceTo: Float = location.distanceTo(locationToCompare)
 
 //                Location: ($lat, $long), \nCounter: $counter\n
+
+                if(distanceTo < 10000) {
+                    val sound = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+                    sound.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
+
+                    Log.d(ContentValues.TAG, "volume changed")
+                } else {
+                    Log.d(ContentValues.TAG, "not changed, distance ${distanceTo}")
+                }
+
                 val updatedNotfication = notification.setContentText(
                     """Location: ($lat, $long),Counter: $counter"""
                 )

@@ -43,6 +43,13 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
         return db.rawQuery("SELECT * FROM " + TABLE_NAME, null)
     }
 
+    fun deletePlace(id: Int) {
+        val db = this.writableDatabase
+
+        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + ID_COL + "=" + id +"")
+        db.close()
+    }
+
     fun listPlaces(): ArrayList<Place> {
         val sql = "select * from $TABLE_NAME"
         val db = this.readableDatabase
