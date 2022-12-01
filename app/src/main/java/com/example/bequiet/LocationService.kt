@@ -64,6 +64,7 @@ class LocationService: Service() {
             .setOngoing(true)
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
 
 //        val db = DBHelper(this, null)
 //        var places: ArrayList<Place> = db.listPlaces()
@@ -81,20 +82,21 @@ class LocationService: Service() {
 
                 val locationToCompare: Location = Location(LocationManager.GPS_PROVIDER)
 
-                locationToCompare.latitude = places[db.listPlaces().size - 1].x.toDouble()
-                locationToCompare.longitude = places[db.listPlaces().size - 1].y.toDouble()
-//
-                val distanceTo: Float = location.distanceTo(locationToCompare)
+                Log.d(ContentValues.TAG, counter.toString())
 
-//                Location: ($lat, $long), \nCounter: $counter\n
+                for (place in places) {
 
-                if(distanceTo < 10000) {
-                    val sound = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-                    sound.adjustVolume(AudioManager.ADJUST_MUTE, AudioManager.FLAG_REMOVE_SOUND_AND_VIBRATE)
+                    locationToCompare.latitude = place.x
+                    locationToCompare.longitude = place.y
 
-                    Log.d(ContentValues.TAG, "volume changed")
-                } else {
-                    Log.d(ContentValues.TAG, "not changed, distance ${distanceTo}")
+                    var distance = location.distanceTo(locationToCompare)
+
+                    if (location.distanceTo(locationToCompare) <= place.range) {
+                        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, place.volume, 0)
+                        Log.d(ContentValues.TAG, "Place: ${place.name}, distanceTo in meters: ${distance.toString()}, TRUE")
+                    } else {
+                        Log.d(ContentValues.TAG, "Place: ${place.name}, distanceTo in meters: ${distance.toString()}, FALSE")
+                    }
                 }
 
                 val updatedNotfication = notification.setContentText(

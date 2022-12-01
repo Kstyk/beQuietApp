@@ -35,6 +35,7 @@ class MyAdapter(var size: Int): RecyclerView.Adapter<MyViewHolder>() {
             holder.volume.append(places[position].volume.toString())
             holder.x.append(places[position].x.toString())
             holder.y.append(places[position].y.toString())
+            holder.range.append(places[position].range.toString())
         }
 
         holder.btnDel.setOnClickListener() {
@@ -52,6 +53,7 @@ class MyViewHolder(view: View): RecyclerView.ViewHolder(view) {
     val volume = itemView.findViewById<TextView>(R.id.volume)
     val x = itemView.findViewById<TextView>(R.id.x_coord)
     val y = itemView.findViewById<TextView>(R.id.y_coord)
+    val range = itemView.findViewById<TextView>(R.id.rangeTv)
 
     val btnDel = itemView.findViewById<Button>(R.id.delete)
 

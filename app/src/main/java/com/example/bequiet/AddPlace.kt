@@ -2,7 +2,9 @@ package com.example.bequiet
 
 import android.app.Activity
 import android.app.Instrumentation.ActivityResult
+import android.content.Context
 import android.content.Intent
+import android.media.AudioManager
 import android.os.Bundle
 import android.provider.SyncStateContract.Constants
 import android.text.Editable
@@ -27,6 +29,9 @@ class AddPlace : AppCompatActivity() {
         val addBtn = binding.place
         var x: Double = 0.0
         var y: Double = 0.0
+
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        binding.seekBar2.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
 
         var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == Activity.RESULT_OK) {
@@ -53,10 +58,11 @@ class AddPlace : AppCompatActivity() {
         binding.add.setOnClickListener() {
             var name = binding.Name.text.toString()
             var volume = binding.seekBar2.progress
+            var range = binding.range.text.toString().toInt()
 
             val db = DBHelper(this, null)
 
-            db.addPlace(name, volume, x, y)
+            db.addPlace(name, volume, x, y, range)
 
             Toast.makeText(this, name + " added to database", Toast.LENGTH_LONG).show()
         }

@@ -1,11 +1,9 @@
 package com.example.bequiet
 
-import android.app.AlarmManager
-import android.app.PendingIntent
+import android.app.ActivityManager
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.view.View
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bequiet.databinding.ActivityMainBinding
 
@@ -38,22 +36,61 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-
-//        val db = DBHelper(this, null)
-//        Toast.makeText(applicationContext, db.listPlaces().toString(), Toast.LENGTH_LONG).show()
+        val db = DBHelper(this, null)
+        if(!isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) > 0) {
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                startService(this)
+            }
+        }
     }
 
-//    fun startBackgroundProcessButtonClick(view: View) {
-//        val intent = Intent(this, myBackgroundProcess::class.java)
-//        intent.action = "BackgroundProcess"
-//
-//        //Set the repeated Task
-//
-//        //Set the repeated Task
-//        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0)
-//        val alarmManager = getSystemService(ALARM_SERVICE) as AlarmManager
-//        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 0, 10, pendingIntent)
-//
-//        finish()
-//    }
+    override fun onResume() {
+        super.onResume()
+
+        val db = DBHelper(this, null)
+        if(isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) == 0) {
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_STOP
+                startService(this)
+            }
+        }
+
+        if(!isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) > 0) {
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                startService(this)
+            }
+        }
+    }
+
+    override fun onRestart() {
+        super.onRestart()
+
+        val db = DBHelper(this, null)
+        if(isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) == 0) {
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_STOP
+                startService(this)
+            }
+        }
+
+        if(!isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) > 0) {
+            Intent(applicationContext, LocationService::class.java).apply {
+                action = LocationService.ACTION_START
+                startService(this)
+            }
+        }
+    }
+
+    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
+        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
+            if (serviceClass.name == service.service.className) {
+                return true
+            }
+        }
+        return false
+    }
+
 }

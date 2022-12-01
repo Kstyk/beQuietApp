@@ -14,11 +14,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.bequiet.databinding.ActivityAddMarkerBinding
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.*
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
@@ -36,6 +33,9 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        MapsInitializer.initialize(this, MapsInitializer.Renderer.LATEST) {
+
+        }
         binding = ActivityAddMarkerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -79,7 +79,6 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
         ) {
             location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false)!!)
 
-
             if (location != null) {
                 Log.d(ContentValues.TAG, location.latitude.toString())
                 val latlng: LatLng = LatLng(location.latitude, location.longitude)
@@ -91,13 +90,15 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
                     .bearing(90F)
                     .build()
 
-                mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPos))
+                mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPos))
 
                 val marker = MarkerOptions().position(latlng)
                     .title("New Marker").draggable(true)
 
                 mMarkerArray.add(marker)
                 mMap.addMarker(mMarkerArray[0])
+            } else {
+                Log.d(ContentValues.TAG,"no location")
             }
         } else {
             Log.d(ContentValues.TAG, "null hehe")

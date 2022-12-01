@@ -13,7 +13,8 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
                  NAME_COL + " TEXT, " +
                 VOLUME_COL + " INTEGER, " +
                 X_COORD_COL + " DOUBLE, " +
-                Y_COORD_COL + " DOUBLE)")
+                Y_COORD_COL + " DOUBLE, " +
+                RANGE_COL + " INT)")
 
         db?.execSQL(query)
     }
@@ -22,7 +23,8 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
         name: String,
         volume: Int,
         x_coord: Double,
-        y_coord: Double
+        y_coord: Double,
+        range: Int
     ) {
         val values = ContentValues()
 
@@ -30,6 +32,7 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
         values.put(VOLUME_COL, volume)
         values.put(X_COORD_COL, x_coord)
         values.put(Y_COORD_COL, y_coord)
+        values.put(RANGE_COL, range)
 
         val db = this.writableDatabase
 
@@ -63,7 +66,8 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
                 val volume = cursor.getString(2).toInt()
                 val x = cursor.getString(3).toDouble()
                 val y = cursor.getString(4).toDouble()
-                storePlaces.add(Place(id, name, volume, x, y))
+                val range = cursor.getString(5).toInt()
+                storePlaces.add(Place(id, name, volume, x, y, range))
             }
             while (cursor.moveToNext())
         }
@@ -78,10 +82,10 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
         // here we have defined variables for our database
 
         // below is variable for database name
-        private val DATABASE_NAME = "GEEKS_FOR_GEEKS"
+        private val DATABASE_NAME = "PLACES"
 
         // below is the variable for database version
-        private val DATABASE_VERSION = 1
+        private val DATABASE_VERSION = 1.1
 
         // below is the variable for table name
         val TABLE_NAME = "gfg_table"
@@ -91,5 +95,6 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
         val VOLUME_COL = "volume"
         val X_COORD_COL = "x_coordinate"
         val Y_COORD_COL = "y_coordinate"
+        val RANGE_COL = "range"
     }
 }

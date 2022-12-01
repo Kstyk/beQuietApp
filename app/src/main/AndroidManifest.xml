@@ -77,15 +77,6 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
-
-        <receiver android:name=".myBackgroundProcess"
-            android:enabled="true"
-            android:exported="true"
-            android:permission="TODO">
-            <intent-filter>
-                <action android:name="BackgroundProcess" />
-            </intent-filter>
-        </receiver>
     </application>
 
 </manifest>

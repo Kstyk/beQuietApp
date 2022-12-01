@@ -30,6 +30,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <EditText
+        android:id="@+id/range"
+        android:layout_width="match_parent"
+        android:layout_height="61dp"
+        android:ems="10"
+        android:hint="Promień działania"
+        android:inputType="number" />
+
     <Button
         android:id="@+id/place"
         android:layout_width="match_parent"
