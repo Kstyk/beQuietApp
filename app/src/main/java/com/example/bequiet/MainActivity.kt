@@ -30,12 +30,6 @@ class MainActivity : AppCompatActivity() {
             startActivity(myIntent)
         }
 
-        binding.location.setOnClickListener() {
-            val myIntent = Intent(this, CurrentLocation::class.java)
-            startActivity(myIntent)
-        }
-
-
         val db = DBHelper(this, null)
         if(!isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) > 0) {
             Intent(applicationContext, LocationService::class.java).apply {

@@ -27,7 +27,6 @@ class LocationService: Service() {
     private lateinit var locationClient: LocationClient
     private var counter = 0
 
-
     override fun onBind(p0: Intent?): IBinder? {
         return null
     }
@@ -56,7 +55,6 @@ class LocationService: Service() {
     }
 
     private fun start() {
-
         val notification = NotificationCompat.Builder(this, "location")
             .setContentTitle("Tracking location...")
             .setContentText("Location: null")
@@ -112,12 +110,6 @@ class LocationService: Service() {
     }
 
     private fun stop() {
-//        val wakeLock: PowerManager.WakeLock =
-//            (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-//                newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
-//                    release()
-//                }
-//            }
         stopForeground(true)
         stopSelf()
     }

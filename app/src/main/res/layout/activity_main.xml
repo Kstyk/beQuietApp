@@ -1,28 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/linearLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:background="@drawable/background"
     tools:context=".MainActivity">
 
-    <Button
-        android:id="@+id/addPlace"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Dodaj miejsce" />
+        android:layout_height="0dip"
+        android:gravity="bottom|center"
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
-    <Button
-        android:id="@+id/showPlaces"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Lista miejsc" />
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="match_parent"
+            android:layout_height="259dp"
+            android:layout_marginBottom="40dp"
+            app:srcCompat="@drawable/effect" />
 
-    <Button
-        android:id="@+id/location"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:onClick="startBackgroundProcessButtonClick"
-        android:text="Obecna lokalizacja" />
-</LinearLayout>
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/addPlace"
+            android:layout_width="match_parent"
+            android:layout_height="147dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/my_button"
+            android:fontFamily="@font/poppins_black"
+            android:text="Dodaj miejsce"
+            android:textColor="#204c94"
+            android:textSize="23sp"
+            app:strokeColor="#5E2929"
+            app:strokeWidth="10dp" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/showPlaces"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginBottom="5dp"
+            android:background="@drawable/my_button"
+            android:fontFamily="@font/poppins_black"
+            android:text="Lista miejsc"
+            android:textColor="#204c94"
+            android:textSize="23sp" />
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

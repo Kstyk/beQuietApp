@@ -3,14 +3,23 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="20dp"
+    android:background="@drawable/borderbottom"
+    android:paddingBottom="30dp">
 
     <TextView
         android:id="@+id/name"
-        android:layout_width="150dp"
+        android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/poppins_black"
+        android:textAllCaps="true"
+        android:textColor="#204c94"
+        android:textSize="25sp"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -20,47 +29,81 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="6dp"
-        android:text="x: "
+        android:fontFamily="@font/poppins"
+        android:text="x:  "
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/name" />
+        app:layout_constraintTop_toBottomOf="@id/volume" />
 
     <TextView
         android:id="@+id/y_coord"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="20dp"
         android:layout_marginTop="6dp"
-        android:text="y: "
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/x_coord" />
+        android:layout_marginEnd="50dp"
+        android:fontFamily="@font/poppins"
+        android:text="y:  "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toLeftOf="@id/x_coord"
+        app:layout_constraintStart_toEndOf="@+id/x_coord"
+        app:layout_constraintTop_toBottomOf="@+id/volume" />
 
     <TextView
         android:id="@+id/volume"
-        android:layout_width="222dp"
+        android:layout_width="match_parent"
         android:layout_height="36dp"
-        android:layout_marginStart="6dp"
-        android:layout_marginTop="20dp"
-        android:text="Stopień głośności:"
-        app:layout_constraintStart_toEndOf="@+id/name"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="50dp"
+        android:layout_marginEnd="20dp"
+        android:fontFamily="@font/poppins"
+        android:text="Stopień głośności:  "
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/name"
+        app:layout_constraintTop_toTopOf="@id/name" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/delete"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="2dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/my_button"
+        android:fontFamily="@font/poppins_black"
+        android:minWidth="32dp"
+        android:textColor="#204c94"
+        android:minHeight="48dp"
         android:onClick="onDelete"
         android:text="Usuń rekord"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/volume" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rangeTv" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/delete2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        android:background="@drawable/my_button"
+        android:fontFamily="@font/poppins_black"
+        android:minWidth="32dp"
+        android:minHeight="48dp"
+        android:textColor="#204c94"
+        android:onClick="onDelete"
+        android:text="Edytuj rekord"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/delete" />
 
     <TextView
         android:id="@+id/rangeTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="5dp"
-        android:text="Promień:"
+        android:fontFamily="@font/poppins"
+        android:text="Promień:  "
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/y_coord" />
 </androidx.constraintlayout.widget.ConstraintLayout>

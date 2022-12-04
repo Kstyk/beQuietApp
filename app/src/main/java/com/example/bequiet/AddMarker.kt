@@ -14,6 +14,8 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.bequiet.databinding.ActivityAddMarkerBinding
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 import com.google.android.gms.maps.*
 import com.google.android.gms.maps.GoogleMap.OnMarkerDragListener
 import com.google.android.gms.maps.model.CameraPosition
@@ -30,12 +32,12 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var binding: ActivityAddMarkerBinding
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        MapsInitializer.initialize(this, MapsInitializer.Renderer.LATEST) {
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
-        }
         binding = ActivityAddMarkerBinding.inflate(layoutInflater)
         setContentView(binding.root)
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -64,11 +66,6 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
             }
         })
 
-        val locationManager: LocationManager = getSystemService(Context.LOCATION_SERVICE) as LocationManager
-        val criteria: Criteria = Criteria()
-
-        var location: Location?
-
         if (ActivityCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
@@ -77,11 +74,14 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
                 Manifest.permission.ACCESS_COARSE_LOCATION
             ) == PackageManager.PERMISSION_GRANTED
         ) {
-            location = locationManager.getLastKnownLocation(locationManager.getBestProvider(criteria, false)!!)
-
+        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
             if (location != null) {
                 Log.d(ContentValues.TAG, location.latitude.toString())
                 val latlng: LatLng = LatLng(location.latitude, location.longitude)
+
+                latitude = location.latitude
+                longtitude = location.longitude
+
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 11F))
 
                 val cameraPos: CameraPosition = CameraPosition.Builder()
@@ -100,9 +100,8 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
             } else {
                 Log.d(ContentValues.TAG,"no location")
             }
-        } else {
-            Log.d(ContentValues.TAG, "null hehe")
         }
+    }
 
         mMap.setOnMapClickListener {
                 point ->

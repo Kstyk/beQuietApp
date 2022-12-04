@@ -31,7 +31,7 @@ class MyAdapter(var size: Int): RecyclerView.Adapter<MyViewHolder>() {
         var places: ArrayList<Place> = db.listPlaces()
 
         if(places.size > 0) {
-            holder.name.append(places[position].name)
+            holder.name.append(places[position].name.uppercase())
             holder.volume.append(places[position].volume.toString())
             holder.x.append(places[position].x.toString())
             holder.y.append(places[position].y.toString())
@@ -42,8 +42,9 @@ class MyAdapter(var size: Int): RecyclerView.Adapter<MyViewHolder>() {
             db.deletePlace(places[position].id)
             places.removeAt(position)
 
-            notifyDataSetChanged()
             items--
+
+            notifyItemRemoved(position)
         }
     }
 }
