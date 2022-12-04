@@ -1,6 +1,7 @@
 package com.example.bequiet
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,11 +11,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bequiet.databinding.ActivityListOfPlacesBinding
 
 
-class MyAdapter(var size: Int): RecyclerView.Adapter<MyViewHolder>() {
+class MyAdapter(var size: Int, var context: Context): RecyclerView.Adapter<MyViewHolder>() {
     var count: Int = 0
     private lateinit var binding: ActivityListOfPlacesBinding
     var items = size
-
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val layoutInflater = LayoutInflater.from(parent.context)
@@ -46,6 +46,12 @@ class MyAdapter(var size: Int): RecyclerView.Adapter<MyViewHolder>() {
 
             notifyItemRemoved(position)
         }
+
+        holder.btnEdit.setOnClickListener() {
+            val int = Intent(context, AddPlace::class.java)
+            int.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(int)
+        }
     }
 }
 
@@ -57,6 +63,7 @@ class MyViewHolder(view: View): RecyclerView.ViewHolder(view) {
     val range = itemView.findViewById<TextView>(R.id.rangeTv)
 
     val btnDel = itemView.findViewById<Button>(R.id.delete)
+    val btnEdit = itemView.findViewById<Button>(R.id.editBtn)
 
 //    init {
 //        btnDel.setOnClickListener() {

@@ -79,7 +79,7 @@
         app:layout_constraintTop_toBottomOf="@id/rangeTv" />
 
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/delete2"
+        android:id="@+id/editBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
