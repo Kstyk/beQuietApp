@@ -26,47 +26,115 @@ class AddPlace : AppCompatActivity() {
         binding = ActivityAddPlaceBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val addBtn = binding.place
+        val extras: Bundle? = intent.extras
+
+        var name = binding.Name
+        var volume = binding.seekBar2
+        var range = binding.range
+        var addBtn = binding.add
+        var setPlace = binding.place
+//        var xTv = binding.x
+//        var yTv = binding.y
+
+        var id = 0
+
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
+
         var x: Double = 0.0
         var y: Double = 0.0
 
-        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        binding.seekBar2.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
+        if(extras != null) {
+            addBtn.setText("Edytuj miejsce")
+            name.setText(extras.getString("name"))
+            range.setText(extras.getInt("range").toString())
+            volume.progress = extras.getInt("volume")
+            id = extras.getInt("id")
 
-        var resultLauncher = registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-            if (result.resultCode == Activity.RESULT_OK) {
-                // There are no request codes
-                val data: Intent? = result.data
-                binding.x.text = data?.getDoubleExtra("x", 0.0).toString()
-                x = data!!.getDoubleExtra("x", 0.0)
-                binding.y.text = data?.getDoubleExtra("y", 0.0).toString()
-                y = data!!.getDoubleExtra("y", 0.0)
-            } else {
-                binding.x.text = "wrong"
+            var resultLauncher =
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                    if (result.resultCode == Activity.RESULT_OK) {
+                        // There are no request codes
+                        val data: Intent? = result.data
+//                        xTv.text = data?.getDoubleExtra("x", 0.0).toString()
+                        x = data!!.getDoubleExtra("x", 0.0)
+//                        yTv.text = data?.getDoubleExtra("y", 0.0).toString()
+                        y = data!!.getDoubleExtra("y", 0.0)
+                    } else {
+//                        xTv.text = "wrong"
+                    }
+                }
+
+            setPlace.setOnClickListener() {
+                val intent = Intent(this, AddMarker::class.java)
+
+                intent.putExtra("x", extras.getDouble("x"))
+                intent.putExtra("y", extras.getDouble("y"))
+
+                resultLauncher.launch(intent)
+            }
+
+            name.setOnFocusChangeListener(View.OnFocusChangeListener { view, b ->
+                hasWindowFocus()
+            })
+
+            addBtn.setOnClickListener() {
+                var name = name.text.toString()
+                var volume = volume.progress
+                var range = range.text.toString().toInt()
+
+                val db = DBHelper(this, null)
+
+                db.editPlace(id, name, volume, x, y, range)
+
+                Toast.makeText(this, name + " edited in database", Toast.LENGTH_LONG).show()
+
+                val int: Intent = Intent(this, ListOfPlaces::class.java)
+                int.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(int)
+                finish()
+            }
+        } else {
+            var resultLauncher =
+                registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
+                    if (result.resultCode == Activity.RESULT_OK) {
+                        // There are no request codes
+                        val data: Intent? = result.data
+//                        xTv.text = data?.getDoubleExtra("x", 0.0).toString()
+                        x = data!!.getDoubleExtra("x", 0.0)
+//                        yTv.text = data?.getDoubleExtra("y", 0.0).toString()
+                        y = data!!.getDoubleExtra("y", 0.0)
+                    } else {
+//                        xTv.text = "wrong"
+                    }
+                }
+
+            setPlace.setOnClickListener() {
+                val intent = Intent(this, AddMarker::class.java)
+                resultLauncher.launch(intent)
+            }
+
+            name.setOnFocusChangeListener(View.OnFocusChangeListener { view, b ->
+                hasWindowFocus()
+            })
+
+            addBtn.setOnClickListener() {
+                var name = name.text.toString()
+                var volume = volume.progress
+                var range = range.text.toString().toInt()
+
+                val db = DBHelper(this, null)
+
+                db.addPlace(name, volume, x, y, range)
+
+                Toast.makeText(this, name + " added to database", Toast.LENGTH_LONG).show()
+
+                val int: Intent = Intent(this, ListOfPlaces::class.java)
+                int.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+                startActivity(int)
+                finish()
             }
         }
-
-        addBtn.setOnClickListener() {
-            val intent = Intent(this, AddMarker::class.java)
-            resultLauncher.launch(intent)
-        }
-
-        binding.Name.setOnFocusChangeListener(View.OnFocusChangeListener{
-            view, b->hasWindowFocus()
-        })
-
-        binding.add.setOnClickListener() {
-            var name = binding.Name.text.toString()
-            var volume = binding.seekBar2.progress
-            var range = binding.range.text.toString().toInt()
-
-            val db = DBHelper(this, null)
-
-            db.addPlace(name, volume, x, y, range)
-
-            Toast.makeText(this, name + " added to database", Toast.LENGTH_LONG).show()
-        }
-
     }
 
 }

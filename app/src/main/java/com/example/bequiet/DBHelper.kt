@@ -40,6 +40,28 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
         db.close()
     }
 
+    fun editPlace(
+        id:Int,
+        name: String,
+        volume: Int,
+        x_coord: Double,
+        y_coord: Double,
+        range: Int
+    ) {
+        val values = ContentValues()
+
+        values.put(NAME_COL, name)
+        values.put(VOLUME_COL, volume)
+        values.put(X_COORD_COL, x_coord)
+        values.put(Y_COORD_COL, y_coord)
+        values.put(RANGE_COL, range)
+
+        val db = this.writableDatabase
+
+        db.update(TABLE_NAME, values, ID_COL + " = ?", arrayOf<String>(id.toString()))
+        db.close()
+    }
+
     fun getPlace(): Cursor? {
         val db = this.readableDatabase
 

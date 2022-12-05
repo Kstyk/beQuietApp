@@ -11,6 +11,7 @@ import android.location.Location
 import android.location.LocationManager
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import com.example.bequiet.databinding.ActivityAddMarkerBinding
@@ -22,7 +23,6 @@ import com.google.android.gms.maps.model.CameraPosition
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.Marker
 import com.google.android.gms.maps.model.MarkerOptions
-
 
 // [START_EXCLUDE silent]
 //import com.google.maps.example.R
@@ -36,7 +36,6 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         binding = ActivityAddMarkerBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -45,7 +44,7 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
     }
 
     override fun onMapReady(googleMap: GoogleMap) {
@@ -54,6 +53,8 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
 
         var latitude: Double = 0.0
         var longtitude: Double = 0.0
+
+
 
         mMap.setOnMarkerDragListener(object : OnMarkerDragListener {
             override fun onMarkerDragStart(marker: Marker) {}
@@ -66,21 +67,27 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
             }
         })
 
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_COARSE_LOCATION
-            ) == PackageManager.PERMISSION_GRANTED
-        ) {
-        fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
-            if (location != null) {
-                Log.d(ContentValues.TAG, location.latitude.toString())
-                val latlng: LatLng = LatLng(location.latitude, location.longitude)
+        val extras: Bundle? = intent.extras
 
-                latitude = location.latitude
-                longtitude = location.longitude
+        if(extras != null) {
+            Toast.makeText(this, "Extras przekazane x: ${extras.getDouble("x")}, y: ${extras.getDouble("y")}", Toast.LENGTH_LONG).show()
+            if (ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                val locationToCompare: Location = Location(LocationManager.GPS_PROVIDER)
+
+                locationToCompare.latitude = extras.getDouble("x")
+                locationToCompare.longitude = extras.getDouble("y")
+
+                val latlng: LatLng = LatLng(locationToCompare.latitude, locationToCompare.longitude)
+
+                latitude = locationToCompare.latitude
+                longtitude = locationToCompare.longitude
 
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 11F))
 
@@ -97,8 +104,41 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
 
                 mMarkerArray.add(marker)
                 mMap.addMarker(mMarkerArray[0])
-            } else {
-                Log.d(ContentValues.TAG,"no location")
+            }
+        } else {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
+                if (location != null) {
+                    val latlng: LatLng = LatLng(location.latitude, location.longitude)
+
+                    latitude = location.latitude
+                    longtitude = location.longitude
+
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latlng, 11F))
+
+                    val cameraPos: CameraPosition = CameraPosition.Builder()
+                        .target(latlng)
+                        .zoom(11F)
+                        .bearing(90F)
+                        .build()
+
+                    mMap.moveCamera(CameraUpdateFactory.newCameraPosition(cameraPos))
+
+                    val marker = MarkerOptions().position(latlng)
+                        .title("New Marker").draggable(true)
+
+                    mMarkerArray.add(marker)
+                    mMap.addMarker(mMarkerArray[0])
+                } else {
+                    Log.d(ContentValues.TAG, "no location")
+                }
             }
         }
     }
@@ -112,13 +152,11 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
                 longtitude = marker.position.longitude
                 mMarkerArray.add(marker)
                 mMap.addMarker(mMarkerArray[0])
-//                binding.counter.text = point.latitude.toString() + " " + point.longitude.toString()
             } else {
                 latitude = 0.0
                 longtitude = 0.0
                 mMap.clear()
                 mMarkerArray.removeAll(mMarkerArray)
-//                binding.counter.text =""
             }
         }
 

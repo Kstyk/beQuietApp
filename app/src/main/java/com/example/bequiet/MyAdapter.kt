@@ -50,6 +50,14 @@ class MyAdapter(var size: Int, var context: Context): RecyclerView.Adapter<MyVie
         holder.btnEdit.setOnClickListener() {
             val int = Intent(context, AddPlace::class.java)
             int.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+
+            int.putExtra("id", places[position].id)
+            int.putExtra("name", places[position].name)
+            int.putExtra("range", places[position].range)
+            int.putExtra("volume", places[position].volume)
+            int.putExtra("x", places[position].x)
+            int.putExtra("y", places[position].y)
+
             context.startActivity(int)
         }
     }

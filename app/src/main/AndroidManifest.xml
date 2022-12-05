@@ -2,18 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.google.android.providers.gsf.permission.READ_GSERVICES"/>
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-
-    <permission
-        android:name="com.example.bequiet.permission.MAPS_RECEIVE"
-        android:protectionLevel="signature" />
-
     <uses-permission android:name="com.example.bequiet.permission.MAPS_RECEIVE" />
 
     <application
@@ -29,6 +25,7 @@
         android:theme="@style/Theme.BeQuiet"
         tools:targetApi="31">
         <service android:name=".LocationService" android:foregroundServiceType="location" />
+
         <activity
             android:name=".ListOfPlaces"
             android:exported="false">
@@ -51,9 +48,7 @@
                 android:value="" />
         </activity>
 
-        <meta-data
-            android:name="com.google.android.maps.v2.API_KEY"
-            android:value="AIzaSyA1_4MXrobn_yCFvjx5jVc4VhVFwbiMmOI" />
+
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
@@ -71,6 +66,9 @@
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
+        <meta-data
+            android:name="com.google.android.maps.v2.API_KEY"
+            android:value="AIzaSyAsL91j2ouEMddZ6dZtYIfGv0g98MSDJJc" />
     </application>
 
 </manifest>

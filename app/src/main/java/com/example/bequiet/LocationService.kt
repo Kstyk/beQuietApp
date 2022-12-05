@@ -49,12 +49,6 @@ class LocationService: Service() {
     }
 
     private fun start() {
-        val wakeLock: PowerManager.WakeLock =
-            (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                newWakeLock(PowerManager.PARTIAL_WAKE_LOCK or PowerManager.ACQUIRE_CAUSES_WAKEUP, "MyApp::MyWakelockTag").apply {
-                    acquire()
-                }
-            }
         val notification = NotificationCompat.Builder(this, "location")
             .setContentTitle("Tracking location...")
             .setContentText("Location: null")
@@ -110,13 +104,6 @@ class LocationService: Service() {
     }
 
     private fun stop() {
-        val wakeLock: PowerManager.WakeLock =
-            (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
-                    release()
-                }
-            }
-
         stopForeground(true)
         stopSelf()
     }
