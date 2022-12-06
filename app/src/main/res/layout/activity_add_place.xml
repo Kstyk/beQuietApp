@@ -54,17 +54,20 @@
         android:id="@+id/place"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
         android:background="@drawable/my_button"
         android:fontFamily="@font/poppins_black"
-        android:textColor="#204c94"
-        android:text="Wskaż miejsce" />
+        android:text="Wskaż miejsce"
+        android:textColor="#204c94" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/add"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="2dp"
         android:background="@drawable/my_button"
         android:fontFamily="@font/poppins_black"
-        android:textColor="#204c94"
-        android:text="Dodaj miejsce" />
+        android:text="Dodaj miejsce"
+        android:textColor="#204c94" />
 </LinearLayout>

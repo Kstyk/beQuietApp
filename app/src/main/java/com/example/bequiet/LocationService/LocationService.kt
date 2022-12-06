@@ -94,7 +94,13 @@ class LocationService: Service() {
 
                     if (location.distanceTo(locationToCompare) <= place.range) {
                         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, place.volume, 0)
-                        audioManager.setStreamVolume(AudioManager.STREAM_ALARM, place.volume,0)
+                        if(notificationManager.isNotificationPolicyAccessGranted) {
+                            audioManager.ringerMode = AudioManager.RINGER_MODE_SILENT
+                            Log.d(ContentValues.TAG, "Im in audiomanager")
+                        } else {
+                            Log.d(ContentValues.TAG, "Im not in audiomanager")
+                        }
+                        audioManager.setStreamVolume(AudioManager.STREAM_ACCESSIBILITY, place.volume, 0)
 
                         workingPlace = place
 
