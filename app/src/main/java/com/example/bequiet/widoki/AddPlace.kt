@@ -1,20 +1,15 @@
-package com.example.bequiet
+package com.example.bequiet.widoki
 
 import android.app.Activity
-import android.app.Instrumentation.ActivityResult
 import android.content.Context
 import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
-import android.provider.SyncStateContract.Constants
-import android.text.Editable
-import android.text.TextWatcher
 import android.view.View
-import android.widget.SeekBar
 import android.widget.Toast
-import androidx.activity.result.ActivityResultCallback
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bequiet.db.DBHelper
 import com.example.bequiet.databinding.ActivityAddPlaceBinding
 
 class AddPlace : AppCompatActivity() {

@@ -1,4 +1,4 @@
-package com.example.bequiet
+package com.example.bequiet.widoki
 
 import android.app.ActivityManager
 import android.content.Context
@@ -6,6 +6,8 @@ import android.content.Intent
 import android.os.Bundle
 import android.os.PowerManager
 import androidx.appcompat.app.AppCompatActivity
+import com.example.bequiet.db.DBHelper
+import com.example.bequiet.LocationService.LocationService
 import com.example.bequiet.databinding.ActivityMainBinding
 
 

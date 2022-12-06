@@ -1,4 +1,4 @@
-package com.example.bequiet
+package com.example.bequiet.LocationService
 
 import kotlinx.coroutines.flow.Flow
 import android.location.Location

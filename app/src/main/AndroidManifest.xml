@@ -13,7 +13,7 @@
     <uses-permission android:name="com.example.bequiet.permission.MAPS_RECEIVE" />
 
     <application
-        android:name=".LocationApp"
+        android:name=".LocationService.LocationApp"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -24,24 +24,24 @@
 
         android:theme="@style/Theme.BeQuiet"
         tools:targetApi="31">
-        <service android:name=".LocationService" android:foregroundServiceType="location" />
+        <service android:name=".LocationService.LocationService" android:foregroundServiceType="location" />
 
         <activity
-            android:name=".ListOfPlaces"
+            android:name=".widoki.ListOfPlaces"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".AddPlace"
+            android:name=".widoki.AddPlace"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
                 android:value="" />
         </activity>
         <activity
-            android:name=".AddMarker"
+            android:name=".widoki.AddMarker"
             android:exported="false">
             <meta-data
                 android:name="android.app.lib_name"
@@ -54,7 +54,7 @@
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".MainActivity"
+            android:name=".widoki.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,4 +1,4 @@
-package com.example.bequiet
+package com.example.bequiet.db
 
 class Place {
     var id = 0

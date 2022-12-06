@@ -1,13 +1,11 @@
-package com.example.bequiet
+package com.example.bequiet.LocationService
 
 import android.annotation.SuppressLint
-import android.content.ContentValues.TAG
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
-import android.location.LocationRequest
 import android.os.Looper
-import android.util.Log
+import com.example.bequiet.hasLocationPermission
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult

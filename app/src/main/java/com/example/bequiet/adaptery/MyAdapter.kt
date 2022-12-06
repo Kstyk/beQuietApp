@@ -9,6 +9,9 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.bequiet.databinding.ActivityListOfPlacesBinding
+import com.example.bequiet.db.DBHelper
+import com.example.bequiet.db.Place
+import com.example.bequiet.widoki.AddPlace
 
 
 class MyAdapter(var size: Int, var context: Context): RecyclerView.Adapter<MyViewHolder>() {

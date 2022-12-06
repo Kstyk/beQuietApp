@@ -1,4 +1,4 @@
-package com.example.bequiet
+package com.example.bequiet.LocationService
 
 import android.app.Application
 import android.app.NotificationChannel

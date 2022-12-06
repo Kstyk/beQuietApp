@@ -1,4 +1,4 @@
-package com.example.bequiet
+package com.example.bequiet.db
 
 import android.content.ContentValues
 import android.content.Context

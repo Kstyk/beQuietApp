@@ -1,4 +1,4 @@
-package com.example.bequiet
+package com.example.bequiet.LocationService
 
 import android.app.NotificationManager
 import android.app.Service
@@ -9,9 +9,12 @@ import android.location.Location
 import android.location.LocationManager
 import android.media.AudioManager
 import android.os.IBinder
-import android.os.PowerManager
+import android.provider.MediaStore.Audio
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.bequiet.*
+import com.example.bequiet.db.DBHelper
+import com.example.bequiet.db.Place
 import com.google.android.gms.location.LocationServices
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -26,6 +29,8 @@ class LocationService: Service() {
     private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     private lateinit var locationClient: LocationClient
     private var counter = 0
+    var previousVolume = 0
+
 
     override fun onBind(p0: Intent?): IBinder? {
         return null
@@ -57,9 +62,11 @@ class LocationService: Service() {
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+        previousVolume = audioManager.getStreamVolume(AudioManager.STREAM_MUSIC)
 
 //        val db = DBHelper(this, null)
 //        var places: ArrayList<Place> = db.listPlaces()
+
 
         locationClient.getLocationUpdates(100L)
             .catch { e -> e.printStackTrace() }
@@ -74,6 +81,8 @@ class LocationService: Service() {
 
                 val locationToCompare: Location = Location(LocationManager.GPS_PROVIDER)
 
+                var workingPlace: Place? = null
+
                 Log.d(ContentValues.TAG, counter.toString())
 
                 for (place in places) {
@@ -85,10 +94,19 @@ class LocationService: Service() {
 
                     if (location.distanceTo(locationToCompare) <= place.range) {
                         audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, place.volume, 0)
+                        audioManager.setStreamVolume(AudioManager.STREAM_ALARM, place.volume,0)
+
+                        workingPlace = place
+
                         Log.d(ContentValues.TAG, "Place: ${place.name}, distanceTo in meters: ${distance.toString()}, TRUE")
+                        break
                     } else {
                         Log.d(ContentValues.TAG, "Place: ${place.name}, distanceTo in meters: ${distance.toString()}, FALSE")
                     }
+                }
+
+                if (workingPlace == null) {
+                    audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, previousVolume, 0)
                 }
 
                 val updatedNotfication = notification.setContentText(
@@ -104,6 +122,12 @@ class LocationService: Service() {
     }
 
     private fun stop() {
+        val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
+
+        Log.d(ContentValues.TAG, "previous Volume in Stop ${previousVolume}")
+
+        audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, previousVolume, 0)
+
         stopForeground(true)
         stopSelf()
     }
