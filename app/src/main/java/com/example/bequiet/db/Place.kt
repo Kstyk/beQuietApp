@@ -15,6 +15,7 @@ class Place {
         this.y = y
         this.range = range
     }
+
     internal constructor(id: Int, name: String, volume: Int, x: Double, y: Double, range: Int) {
         this.id = id
         this.name = name

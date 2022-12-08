@@ -2,7 +2,6 @@ package com.example.bequiet.db
 
 import android.content.ContentValues
 import android.content.Context
-import android.database.Cursor
 import android.database.sqlite.SQLiteDatabase
 import android.database.sqlite.SQLiteOpenHelper
 
@@ -58,20 +57,14 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
 
         val db = this.writableDatabase
 
-        db.update(TABLE_NAME, values, ID_COL + " = ?", arrayOf<String>(id.toString()))
+        db.update(TABLE_NAME, values, "$ID_COL = ?", arrayOf(id.toString()))
         db.close()
-    }
-
-    fun getPlace(): Cursor? {
-        val db = this.readableDatabase
-
-        return db.rawQuery("SELECT * FROM " + TABLE_NAME, null)
     }
 
     fun deletePlace(id: Int) {
         val db = this.writableDatabase
 
-        db.execSQL("DELETE FROM " + TABLE_NAME + " WHERE " + ID_COL + "=" + id +"")
+        db.execSQL("DELETE FROM $TABLE_NAME WHERE $ID_COL=$id")
         db.close()
     }
 
@@ -104,19 +97,19 @@ class DBHelper(context: Context, factory:SQLiteDatabase.CursorFactory?) : SQLite
         // here we have defined variables for our database
 
         // below is variable for database name
-        private val DATABASE_NAME = "PLACES"
+        private const val DATABASE_NAME = "PLACES"
 
         // below is the variable for database version
-        private val DATABASE_VERSION = 1.1
+        private const val DATABASE_VERSION = 1.1
 
         // below is the variable for table name
-        val TABLE_NAME = "gfg_table"
+        const val TABLE_NAME = "gfg_table"
 
-        val ID_COL = "id"
-        val NAME_COL = "name"
-        val VOLUME_COL = "volume"
-        val X_COORD_COL = "x_coordinate"
-        val Y_COORD_COL = "y_coordinate"
-        val RANGE_COL = "range"
+        const val ID_COL = "id"
+        const val NAME_COL = "name"
+        const val VOLUME_COL = "volume"
+        const val X_COORD_COL = "x_coordinate"
+        const val Y_COORD_COL = "y_coordinate"
+        const val RANGE_COL = "range"
     }
 }

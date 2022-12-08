@@ -1,5 +1,6 @@
 package com.example.bequiet.widoki
 
+import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.Context
 import android.content.Intent
@@ -15,6 +16,7 @@ import com.example.bequiet.databinding.ActivityAddPlaceBinding
 class AddPlace : AppCompatActivity() {
     private lateinit var binding: ActivityAddPlaceBinding
 
+    @SuppressLint("SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
 
         super.onCreate(savedInstanceState)
@@ -23,30 +25,26 @@ class AddPlace : AppCompatActivity() {
 
         val extras: Bundle? = intent.extras
 
-        var name = binding.Name
-        var volume = binding.seekBar2
-        var range = binding.range
-        var addBtn = binding.add
-        var setPlace = binding.place
-//        var xTv = binding.x
-//        var yTv = binding.y
-
-        var id = 0
+        val name = binding.Name
+        val volume = binding.seekBar2
+        val range = binding.range
+        val addBtn = binding.add
+        val setPlace = binding.place
 
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
-        volume.setMax(audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC))
+        volume.max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
 
-        var x: Double = 0.0
-        var y: Double = 0.0
+        var x = 0.0
+        var y = 0.0
 
         if(extras != null) {
-            addBtn.setText("Edytuj miejsce")
+            addBtn.text = "Edytuj miejsce"
             name.setText(extras.getString("name"))
             range.setText(extras.getInt("range").toString())
             volume.progress = extras.getInt("volume")
-            id = extras.getInt("id")
+            val id = extras.getInt("id")
 
-            var resultLauncher =
+            val resultLauncher =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                     if (result.resultCode == Activity.RESULT_OK) {
                         // There are no request codes
@@ -54,13 +52,13 @@ class AddPlace : AppCompatActivity() {
 //                        xTv.text = data?.getDoubleExtra("x", 0.0).toString()
                         x = data!!.getDoubleExtra("x", 0.0)
 //                        yTv.text = data?.getDoubleExtra("y", 0.0).toString()
-                        y = data!!.getDoubleExtra("y", 0.0)
+                        y = data.getDoubleExtra("y", 0.0)
                     } else {
 //                        xTv.text = "wrong"
                     }
                 }
 
-            setPlace.setOnClickListener() {
+            setPlace.setOnClickListener {
                 val intent = Intent(this, AddMarker::class.java)
 
                 intent.putExtra("x", extras.getDouble("x"))
@@ -69,28 +67,32 @@ class AddPlace : AppCompatActivity() {
                 resultLauncher.launch(intent)
             }
 
-            name.setOnFocusChangeListener(View.OnFocusChangeListener { view, b ->
+            name.onFocusChangeListener = View.OnFocusChangeListener { _, _ ->
                 hasWindowFocus()
-            })
+            }
 
-            addBtn.setOnClickListener() {
-                var name = name.text.toString()
-                var volume = volume.progress
-                var range = range.text.toString().toInt()
+            addBtn.setOnClickListener {
+                val nameField = name.text.toString()
+                val volumeBar = volume.progress
+                val rangeField = range.text.toString()
 
-                val db = DBHelper(this, null)
+                if (validator(nameField, rangeField, x, y)) {
+                    val db = DBHelper(this, null)
 
-                db.editPlace(id, name, volume, x, y, range)
+                    val rangeToInt: Int = rangeField.toInt()
 
-                Toast.makeText(this, name + " edited in database", Toast.LENGTH_LONG).show()
+                    db.editPlace(id, nameField, volumeBar, x, y, rangeToInt)
 
-                val int: Intent = Intent(this, ListOfPlaces::class.java)
-                int.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(int)
-                finish()
+                    Toast.makeText(this, "$nameField edited in database", Toast.LENGTH_LONG).show()
+
+                    val int = Intent(this, ListOfPlaces::class.java)
+                    int.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    startActivity(int)
+                    finish()
+            }
             }
         } else {
-            var resultLauncher =
+            val resultLauncher =
                 registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
                     if (result.resultCode == Activity.RESULT_OK) {
                         // There are no request codes
@@ -98,38 +100,60 @@ class AddPlace : AppCompatActivity() {
 //                        xTv.text = data?.getDoubleExtra("x", 0.0).toString()
                         x = data!!.getDoubleExtra("x", 0.0)
 //                        yTv.text = data?.getDoubleExtra("y", 0.0).toString()
-                        y = data!!.getDoubleExtra("y", 0.0)
+                        y = data.getDoubleExtra("y", 0.0)
                     } else {
 //                        xTv.text = "wrong"
                     }
                 }
 
-            setPlace.setOnClickListener() {
+            setPlace.setOnClickListener {
                 val intent = Intent(this, AddMarker::class.java)
                 resultLauncher.launch(intent)
             }
 
-            name.setOnFocusChangeListener(View.OnFocusChangeListener { view, b ->
+            name.onFocusChangeListener = View.OnFocusChangeListener { _, _ ->
                 hasWindowFocus()
-            })
+            }
 
-            addBtn.setOnClickListener() {
-                var name = name.text.toString()
-                var volume = volume.progress
-                var range = range.text.toString().toInt()
+            addBtn.setOnClickListener {
+                val nameField = name.text.toString()
+                val volumeBar = volume.progress
+                val rangeField = range.text.toString()
 
-                val db = DBHelper(this, null)
 
-                db.addPlace(name, volume, x, y, range)
+                if (validator(nameField, rangeField, x, y)) {
+                    val rangeInt: Int = rangeField.toInt()
 
-                Toast.makeText(this, name + " added to database", Toast.LENGTH_LONG).show()
+                    val db = DBHelper(this, null)
 
-                val int: Intent = Intent(this, ListOfPlaces::class.java)
-                int.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-                startActivity(int)
-                finish()
+                    db.addPlace(nameField, volumeBar, x, y, rangeInt)
+
+                    Toast.makeText(this, "$nameField added to database", Toast.LENGTH_LONG).show()
+
+                    val int = Intent(this, ListOfPlaces::class.java)
+                    int.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+                    startActivity(int)
+                    finish()
+                }
             }
         }
+    }
+
+    private fun validator(name: String, range: String, x: Double, y: Double): Boolean {
+        if(name.trim().isEmpty()) {
+            Toast.makeText(this, "Podaj jakąś nazwę!", Toast.LENGTH_SHORT).show()
+            return false
+        }
+         else if(range.isEmpty() || range.toIntOrNull() == null) {
+            Toast.makeText(this, "Podaj jakąś liczbę", Toast.LENGTH_SHORT).show()
+            return false
+        } else if(x == 0.0 && y == 0.0) {
+            Toast.makeText(this, "Podaj jakieś współrzędne", Toast.LENGTH_SHORT).show()
+        }
+        else {
+            return true
+        }
+        return true
     }
 
 }

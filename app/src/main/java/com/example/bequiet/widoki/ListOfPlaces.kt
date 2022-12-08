@@ -4,7 +4,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bequiet.db.DBHelper
-import com.example.bequiet.MyAdapter
+import com.example.bequiet.adaptery.MyAdapter
 import com.example.bequiet.databinding.ActivityListOfPlacesBinding
 
 class ListOfPlaces : AppCompatActivity() {

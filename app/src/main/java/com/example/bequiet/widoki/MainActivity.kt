@@ -1,14 +1,17 @@
 package com.example.bequiet.widoki
 
+import CheckLocationPermissions
 import android.app.ActivityManager
+import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import android.os.PowerManager
+import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
-import com.example.bequiet.db.DBHelper
-import com.example.bequiet.LocationService.LocationService
+import com.example.bequiet.*
 import com.example.bequiet.databinding.ActivityMainBinding
+import com.example.bequiet.db.DBHelper
 
 
 class MainActivity : AppCompatActivity() {
@@ -17,12 +20,24 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val wakeLock: PowerManager.WakeLock =
-            (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
-                newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "MyApp::MyWakelockTag").apply {
-                    acquire()
-                }
-            }
+        // permissions i inne
+        val checkLocationPermissions = CheckLocationPermissions()
+        checkLocationPermissions.statusCheck(this)
+
+        val checkConnection = CheckConnection()
+        if(!checkConnection.isNetworkConnected(this)) {
+            checkConnection.showAlertDialogButtonClicked(this)
+        }
+
+        val n = applicationContext.getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        if (!n.isNotificationPolicyAccessGranted) {
+            val alert = AlertDialogDontDisurb().showAlertDialogButtonClicked(this)
+        }
+
+        val checkLocation = CheckLocation()
+        checkLocation.statusCheck(this)
+        Intent.FLAG_ACTIVITY_CLEAR_TASK
+        // end of checking permissions
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -30,12 +45,12 @@ class MainActivity : AppCompatActivity() {
         val addBtn = binding.addPlace
         val showBtn = binding.showPlaces
 
-        addBtn.setOnClickListener() {
+        addBtn.setOnClickListener {
             val myIntent = Intent(this, AddPlace::class.java)
             startActivity(myIntent)
         }
 
-        showBtn.setOnClickListener() {
+        showBtn.setOnClickListener {
             val myIntent = Intent(this, ListOfPlaces::class.java)
             startActivity(myIntent)
         }
@@ -87,6 +102,7 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
+    @Suppress("DEPRECATION")
     private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
         val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {

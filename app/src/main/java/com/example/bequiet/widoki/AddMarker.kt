@@ -54,10 +54,8 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         val mMarkerArray: MutableList<MarkerOptions> = ArrayList()
 
-        var latitude: Double = 0.0
-        var longtitude: Double = 0.0
-
-
+        var latitude = 0.0
+        var longtitude = 0.0
 
         mMap.setOnMarkerDragListener(object : OnMarkerDragListener {
             override fun onMarkerDragStart(marker: Marker) {}
@@ -82,12 +80,12 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
                     Manifest.permission.ACCESS_COARSE_LOCATION
                 ) == PackageManager.PERMISSION_GRANTED
             ) {
-                val locationToCompare: Location = Location(LocationManager.GPS_PROVIDER)
+                val locationToCompare = Location(LocationManager.GPS_PROVIDER)
 
                 locationToCompare.latitude = extras.getDouble("x")
                 locationToCompare.longitude = extras.getDouble("y")
 
-                val latlng: LatLng = LatLng(locationToCompare.latitude, locationToCompare.longitude)
+                val latlng = LatLng(locationToCompare.latitude, locationToCompare.longitude)
 
                 latitude = locationToCompare.latitude
                 longtitude = locationToCompare.longitude
@@ -119,7 +117,7 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
 //        ) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location: Location? ->
                 if (location != null) {
-                    val latlng: LatLng = LatLng(location.latitude, location.longitude)
+                    val latlng = LatLng(location.latitude, location.longitude)
 
                     latitude = location.latitude
                     longtitude = location.longitude
@@ -163,7 +161,7 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
         }
 
 
-        binding.confirm.setOnClickListener() {
+        binding.confirm.setOnClickListener {
             val returnIntent = Intent().apply {
                 putExtra("x", latitude)
                 putExtra("y", longtitude)

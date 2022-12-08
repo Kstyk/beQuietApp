@@ -1,11 +1,11 @@
-package com.example.bequiet.LocationService
+package com.example.bequiet
 
 import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.location.LocationManager
 import android.os.Looper
-import com.example.bequiet.hasLocationPermission
+
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
@@ -33,7 +33,7 @@ class DefaultLocationClient(
                 throw LocationClient.LocationException("GPS is disabled")
             }
 
-            val request = com.google.android.gms.location.LocationRequest.
+            @Suppress("DEPRECATION") val request = com.google.android.gms.location.LocationRequest.
                     create().setInterval(interval).setFastestInterval(interval)
 
             val locationCallback = object : LocationCallback() {
