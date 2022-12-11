@@ -1,4 +1,4 @@
-package com.example.bequiet
+package com.example.bequiet.locationService
 
 import android.content.Context
 import android.content.pm.PackageManager

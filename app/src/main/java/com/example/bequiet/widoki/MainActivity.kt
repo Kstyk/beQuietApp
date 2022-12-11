@@ -1,17 +1,18 @@
 package com.example.bequiet.widoki
 
-import CheckLocationPermissions
+import com.example.bequiet.permissions.CheckLocationPermissions
 import android.app.ActivityManager
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
-import android.provider.Settings
 import androidx.appcompat.app.AppCompatActivity
-import com.example.bequiet.*
 import com.example.bequiet.databinding.ActivityMainBinding
 import com.example.bequiet.db.DBHelper
+import com.example.bequiet.locationService.LocationService
+import com.example.bequiet.permissions.AlertDialogDontDisurb
+import com.example.bequiet.permissions.CheckConnection
+import com.example.bequiet.permissions.CheckLocation
 
 
 class MainActivity : AppCompatActivity() {
@@ -36,7 +37,6 @@ class MainActivity : AppCompatActivity() {
 
         val checkLocation = CheckLocation()
         checkLocation.statusCheck(this)
-        Intent.FLAG_ACTIVITY_CLEAR_TASK
         // end of checking permissions
 
         binding = ActivityMainBinding.inflate(layoutInflater)

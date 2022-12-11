@@ -1,4 +1,4 @@
-package com.example.bequiet
+package com.example.bequiet.locationService
 
 import android.app.NotificationManager
 import android.app.Service
@@ -11,6 +11,7 @@ import android.media.AudioManager
 import android.os.IBinder
 import android.util.Log
 import androidx.core.app.NotificationCompat
+import com.example.bequiet.R
 import com.example.bequiet.db.DBHelper
 import com.example.bequiet.db.Place
 import com.google.android.gms.location.LocationServices

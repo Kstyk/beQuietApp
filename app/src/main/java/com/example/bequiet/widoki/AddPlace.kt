@@ -42,6 +42,8 @@ class AddPlace : AppCompatActivity() {
             name.setText(extras.getString("name"))
             range.setText(extras.getInt("range").toString())
             volume.progress = extras.getInt("volume")
+            x = extras.getDouble("x")
+            y = extras.getDouble("y")
             val id = extras.getInt("id")
 
             val resultLauncher =

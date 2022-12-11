@@ -1,4 +1,4 @@
-package com.example.bequiet
+package com.example.bequiet.locationService
 
 import android.app.Application
 import android.app.NotificationChannel
@@ -11,7 +11,7 @@ class LocationApp: Application() {
         val channel = NotificationChannel(
             "location",
             "location",
-            NotificationManager.IMPORTANCE_NONE
+            NotificationManager.IMPORTANCE_LOW
         )
 
         val notificationManager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

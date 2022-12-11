@@ -1,4 +1,4 @@
-package com.example.bequiet
+package com.example.bequiet.locationService
 
 import android.annotation.SuppressLint
 import android.content.Context
