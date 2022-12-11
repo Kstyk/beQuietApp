@@ -1,14 +1,13 @@
 package com.example.bequiet.widoki
 
 import com.example.bequiet.permissions.CheckLocationPermissions
-import android.app.ActivityManager
 import android.app.NotificationManager
-import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.bequiet.databinding.ActivityMainBinding
 import com.example.bequiet.db.DBHelper
+import com.example.bequiet.permissions.isServiceRunning
 import com.example.bequiet.locationService.LocationService
 import com.example.bequiet.permissions.AlertDialogDontDisurb
 import com.example.bequiet.permissions.CheckConnection
@@ -55,8 +54,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(myIntent)
         }
 
+
+        val service = isServiceRunning()
+        val ifRun = service.isMyServiceRunning(LocationService::class.java, this)
+
         val db = DBHelper(this, null)
-        if(!isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) > 0) {
+        if(!ifRun && (db.listPlaces().size) > 0) {
             Intent(applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_START
                 startService(this)
@@ -67,15 +70,18 @@ class MainActivity : AppCompatActivity() {
     override fun onResume() {
         super.onResume()
 
+        val service = isServiceRunning()
+        val ifRun = service.isMyServiceRunning(LocationService::class.java, this)
+
         val db = DBHelper(this, null)
-        if(isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) == 0) {
+        if(ifRun && (db.listPlaces().size) == 0) {
             Intent(applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_STOP
                 startService(this)
             }
         }
 
-        if(!isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) > 0) {
+        if(!ifRun && (db.listPlaces().size) > 0) {
             Intent(applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_START
                 startService(this)
@@ -86,31 +92,22 @@ class MainActivity : AppCompatActivity() {
     override fun onRestart() {
         super.onRestart()
 
+        val service = isServiceRunning()
+        val ifRun = service.isMyServiceRunning(LocationService::class.java, this)
+
         val db = DBHelper(this, null)
-        if(isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) == 0) {
+        if(ifRun && (db.listPlaces().size) == 0) {
             Intent(applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_STOP
                 startService(this)
             }
         }
 
-        if(!isMyServiceRunning(LocationService::class.java) && (db.listPlaces().size) > 0) {
+        if(!ifRun && (db.listPlaces().size) > 0) {
             Intent(applicationContext, LocationService::class.java).apply {
                 action = LocationService.ACTION_START
                 startService(this)
             }
         }
     }
-
-    @Suppress("DEPRECATION")
-    private fun isMyServiceRunning(serviceClass: Class<*>): Boolean {
-        val manager = getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-        for (service in manager.getRunningServices(Int.MAX_VALUE)) {
-            if (serviceClass.name == service.service.className) {
-                return true
-            }
-        }
-        return false
-    }
-
 }

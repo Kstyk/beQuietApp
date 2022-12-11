@@ -11,6 +11,8 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.bequiet.R
 import com.example.bequiet.db.DBHelper
 import com.example.bequiet.db.Place
+import com.example.bequiet.permissions.isServiceRunning
+import com.example.bequiet.locationService.LocationService
 import com.example.bequiet.widoki.AddPlace
 
 
@@ -46,6 +48,16 @@ class MyAdapter(private var size: Int, var context: Context): RecyclerView.Adapt
             items--
 
             notifyItemRemoved(position)
+
+            val service = isServiceRunning()
+            val ifRun = service.isMyServiceRunning(LocationService::class.java, context)
+
+            if(ifRun && (db.listPlaces().size) == 0) {
+                Intent(context, LocationService::class.java).apply {
+                    action = LocationService.ACTION_STOP
+                    context.startService(this)
+                }
+            }
         }
 
         holder.btnEdit.setOnClickListener {
