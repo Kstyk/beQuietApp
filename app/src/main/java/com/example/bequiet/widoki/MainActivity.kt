@@ -3,12 +3,15 @@ package com.example.bequiet.widoki
 import com.example.bequiet.permissions.CheckLocationPermissions
 import android.app.NotificationManager
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.content.ContextCompat
 import com.example.bequiet.databinding.ActivityMainBinding
 import com.example.bequiet.db.DBHelper
 import com.example.bequiet.permissions.isServiceRunning
 import com.example.bequiet.locationService.LocationService
+import com.example.bequiet.locationService.hasLocationPermission
 import com.example.bequiet.permissions.AlertDialogDontDisurb
 import com.example.bequiet.permissions.CheckConnection
 import com.example.bequiet.permissions.CheckLocation
@@ -91,6 +94,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onRestart() {
         super.onRestart()
+
+
 
         val service = isServiceRunning()
         val ifRun = service.isMyServiceRunning(LocationService::class.java, this)

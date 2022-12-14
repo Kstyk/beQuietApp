@@ -8,6 +8,7 @@ import android.content.Intent
 import android.media.AudioManager
 import android.os.Bundle
 import android.view.View
+import android.widget.SeekBar
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
@@ -36,6 +37,20 @@ class AddPlace : AppCompatActivity() {
 
         val audioManager = getSystemService(Context.AUDIO_SERVICE) as AudioManager
         volume.max = audioManager.getStreamMaxVolume(AudioManager.STREAM_MUSIC)
+
+        volume.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener{
+            override fun onProgressChanged(seekBar: SeekBar, progress: Int, fromUser: Boolean) {
+                binding.textView.text = "Stopień głośności: ${progress}"
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar) {
+                // you can probably leave this empty
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar) {
+                // you can probably leave this empty
+            }
+        })
 
         var x = 0.0
         var y = 0.0

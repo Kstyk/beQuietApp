@@ -71,7 +71,7 @@ internal class AddMarker : AppCompatActivity(), OnMapReadyCallback {
         val extras: Bundle? = intent.extras
 
         if(extras != null) {
-            Toast.makeText(this, "Extras przekazane x: ${extras.getDouble("x")}, y: ${extras.getDouble("y")}", Toast.LENGTH_LONG).show()
+//            Toast.makeText(this, "Extras przekazane x: ${extras.getDouble("x")}, y: ${extras.getDouble("y")}", Toast.LENGTH_LONG).show()
             if (ActivityCompat.checkSelfPermission(
                     this,
                     Manifest.permission.ACCESS_FINE_LOCATION
