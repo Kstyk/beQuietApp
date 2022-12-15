@@ -19,7 +19,7 @@ class CheckLocationPermissions {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
         builder.setMessage("Twoja aplikacja nie ma uprawnień do lokalizacji, musisz je włączyć, by twoja aplikacja działała poprawnie")
             .setCancelable(false)
-            .setPositiveButton("Yes",
+            .setPositiveButton("Włącz",
                 DialogInterface.OnClickListener { dialog, id ->
                     val intent = Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)
                     val uri = Uri.fromParts(
@@ -29,7 +29,7 @@ class CheckLocationPermissions {
                     intent.data = uri
                     context.startActivity(intent)
                 })
-            .setNegativeButton("No",
+            .setNegativeButton("Wyjdź",
                 DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         val alert: AlertDialog = builder.create()
 

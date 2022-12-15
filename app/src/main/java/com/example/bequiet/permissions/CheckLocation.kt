@@ -17,14 +17,14 @@ class CheckLocation {
 
     private fun buildAlertMessageNoGps(context: Context) {
         val builder: AlertDialog.Builder = AlertDialog.Builder(context)
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
+        builder.setMessage("Musisz włączyć GPS, by aplikacja działała poprawnie")
             .setCancelable(false)
-            .setPositiveButton("Yes",
+            .setPositiveButton("Włącz",
                 DialogInterface.OnClickListener { dialog, id ->
                     val panelIntent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                     context.startActivity(panelIntent)
                 })
-            .setNegativeButton("No",
+            .setNegativeButton("Wyjdź",
                 DialogInterface.OnClickListener { dialog, id -> dialog.cancel() })
         val alert: AlertDialog = builder.create()
         alert.show()
